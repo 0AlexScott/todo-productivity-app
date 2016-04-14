@@ -25,6 +25,7 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services'])
 
   function onDeviceReady() {
       listStorageService.init();
+      
   }
 
 }])
