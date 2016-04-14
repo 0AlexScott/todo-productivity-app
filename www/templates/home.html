@@ -21,7 +21,11 @@
                       <i class="icon ion-ios-telephone-outline"></i>
                   </span>
               </div>
+              <div ng-repeat="task in model.tasks" class="todo-list-item">
+                  {{task.taskName}}
+              </div>
           </div>
+          <button ng-click="init()">CLICK ME</button>
       </div>
 </ion-content>
 </ion-view>
