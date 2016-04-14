@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+      <meta http-equiv="Content-Security-Policy">
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -11,6 +12,8 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
+
+    <script type="text/javascript" src="SQLitePlugin.js"></script>
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -25,6 +28,7 @@
     <script src="js/controllers/homeController.js"></script>
 
     <script src="js/services/listStorageService.js"></script>
+      
   </head>
 
   <body ng-app="starter">
