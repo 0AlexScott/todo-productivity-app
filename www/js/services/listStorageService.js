@@ -1,4 +1,4 @@
-﻿angular.module('app.services').factory('listStorageService', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
+﻿angular.module('app.services').factory('listStorageService', ['$http', '$q', '$timeout', '$rootScope', function ($http, $q, $timeout, $rootScope) {
 
     var service = {};
 
@@ -7,7 +7,15 @@
             service.db = window.sqlitePlugin.openDatabase({ name: "my.storage.db" });
             service.db.executeSql('CREATE TABLE IF NOT EXISTS list_table (id integer primary key, listName text, deletable integer);');
             service.db.executeSql('CREATE TABLE IF NOT EXISTS task_table (id integer primary key, listId integer, taskName text, subTasks text, completionDate text, productivityPoints integer, reminder integer);');
-            service.firstTimeOpen();
+
+            console.log("ListService initialising");
+            if (!service.db) {
+                $timeout(
+                    service.firstTimeOpen(),
+                4000);
+            } else {
+                service.firstTimeOpen();
+            }
         }
     };
 
@@ -16,10 +24,13 @@
         //2: if yes, do nothing
         //3: if no, create two lists and add task to list
         return $q(function (resolve, reject) {
-            service.db.executeSql("SELECT * FROM list_table;", function (res) {
+            service.db.executeSql("SELECT id FROM list_table;", [], function (res) {
                 if (res.rows.length > 0) {
-                    return 0;
+                    console.log("FirstTimeOpen = false, no new lists");
+                    $rootScope.$broadcast("listStorageInitialised");
+                    resolve(true);
                 } else {
+                    console.log("FirstTimeOpen = true, lists being initialised");
                     service.createList('Todo: Next few days', 0);
                     service.createList('Todo: Some day', 0);
                     var d = new Date();
@@ -27,9 +38,11 @@
                     var m = d.getMonth();
                     var date = n + "/" + m;
                     service.createTask(1, 'Make new list', '[{\"name\":\"Create list from side menu\"}, {\"name\":\"Open list and add new task\"}]', date, 50, 0);
+                    $rootScope.$broadcast("listStorageInitialised");
+                    resolve(true);
                 }
             }, function (error) {
-                reject(console.log('SELECT error: ' + error.message));
+                reject(console.log('SELECT error in $scope.firstTimeOpen'));
             });
         });
 
@@ -77,9 +90,10 @@
     service.getTasksInList = function (listId) {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT * FROM task_table WHERE listId=?;", [listId], function (res) {
+                console.log("Tasks in list retrieved");
                 resolve(res.rows);
             }, function (error) {
-                reject(console.log('SELECT error: ' + error.message));
+                reject(console.log('SELECT error in getTasksInList'));
             });
         });
     };

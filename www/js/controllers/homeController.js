@@ -7,17 +7,12 @@ angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorage
 
     $scope.model = {};
     $scope.model.tasks = [];
+    $scope.model.pageReady = false;
 
-    $scope.init = function () {
-        if (!listStorageService.db) {
-            $timeout(function () {
-                $scope.loadTasks(1);
-            }, 3000);
-        } else {
-            $scope.loadTasks(1);
-        }
-        
-    }
+    $scope.$on("listStorageInitialised", function () {
+        $scope.loadTasks(1);
+        $scope.model.pageReady = true;
+    });
 
     $scope.loadTasks = function (listId) {
         listStorageService.getTasksInList(listId).then(function (rows) {
@@ -26,9 +21,8 @@ angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorage
                 $scope.model.tasks[i] = rows.item(i);
                 $scope.model.tasks[i].subTasks = angular.fromJson(rows.item(i).subTasks);
             }
-        }, function (error) { });
+        }, function (error) {console.log("Error in $scope.loadTasks")});
     }
 
-    $scope.init();
 
 }]);
