@@ -1,7 +1,7 @@
 <ion-view view-title="Todo: Next few days">
     <ion-header-bar>
         <div class="home-header-button">
-            <i class="icon ion-plus-circled plus-button"></i>
+            <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: 1})"></i>
         </div>
 
     </ion-header-bar>
@@ -19,7 +19,7 @@
                             {{timeframe.name}}
                         </div>
                         <div ng-if="timeframe.tasks.length == 0" class="todo-list-item">
-                            No tasks added for this time
+                            <i>No tasks added for this time</i>
                         </div>  
                         <div ng-repeat="task in timeframe.tasks">
 

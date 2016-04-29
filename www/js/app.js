@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'app.controllers', 'app.services'])
+angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.bootstrap'])
 
 .run(['$ionicPlatform', 'listStorageService', function ($ionicPlatform, listStorageService) {
   $ionicPlatform.ready(function() {
@@ -47,11 +47,21 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services'])
             controller: 'HomeCtrl'
         }
       }
+    })
+    .state('app.taskCreation', {
+        url: '/taskCreation',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/taskCreation.html',
+                controller: 'TaskCreationCtrl'
+            }
+        },
+        params:{listId: 1}
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });
 
 
-angular.module('app.controllers', []);
+angular.module('app.controllers', ['ui.bootstrap']);
 angular.module('app.services', []);

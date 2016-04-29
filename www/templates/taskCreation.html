@@ -1,0 +1,54 @@
+﻿<ion-view view-title="Create a task">
+    <ion-content>
+        <div class="page-content">
+            <div class="list">
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">Task</span>
+                    <input type="text" ng-model="model.newTask.taskName" placeholder="Task description">
+                </label>
+                <div class="todo-list-item todo-list-divider">
+
+                </div>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">
+                        Sub-tasks
+                    </span>
+                    <input type="text" ng-repeat="subTask in model.newTask.subTasks" ng-model="subTask.name" placeholder="Sub-task description">
+                </label>
+                <span class="item-input item-stacked-label" ng-click="addNewSubTask()">
+                    <i class="icon ion-plus-circled plus-button-small"></i>
+                    Add another sub-task
+                </span>
+                <div class="todo-list-item todo-list-divider">
+                </div>
+            </div>
+            <div class="list">
+                <label class="item-input item-stacked-label">
+                    <span>When?</span>
+                </label>
+                <div class="list-item">
+                    <span class="input-group" style="text-align:center">
+                        <input type="text" uib-datepicker-popup ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="icon ion-ios-calendar-outline"></i></button>
+                        </span>
+                    </span>
+                </div>
+                <div class="todo-list-item todo-list-divider">
+                </div>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">Productivity Points - {{model.newTask.productivityPoints}}</span>
+                </label>
+                <div class="range range-positive">
+                    <i class="icon ion-ios-sunny-outline"></i>
+                    <input type="range" name="volume" min="0" max="100" value="{{model.newTask.productivityPoints}}" ng-model="model.newTask.productivityPoints">
+                    <i class="icon ion-ios-sunny"></i>
+                </div>
+                <div class="todo-list-item todo-list-divider">
+                </div>
+            </div>
+
+
+        </div>
+    </ion-content>
+</ion-view>

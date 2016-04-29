@@ -10,12 +10,18 @@
     background-color:#FFFFFF;
 }
 
-.page-header {
+.plus-button-small {
+    font-size:28px;
+    color:#FF686B; 
+    background-color:#FFFFFF;
+}
+
+.screen-header {
     height: 60px !important;
     
 }
 
-.page-header > div {
+.screen-header > div {
     font-size: 24px !important;
 }
 
