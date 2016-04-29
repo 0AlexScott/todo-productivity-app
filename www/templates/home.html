@@ -1,31 +1,42 @@
 <ion-view view-title="Todo: Next few days">
-  <ion-header-bar>
-      <div class="home-header-button">
-          <i class="icon ion-plus-circled plus-button"></i>
-      </div>
-      
-  </ion-header-bar>
-  <ion-content>
-      <div class="page-content">
-          <div class="todo-list">
-              <div class="todo-list-item todo-list-divider">
-                  Today
-              </div>
-              <div class="todo-list-item" >
-                  Item
-              </div>
-              <div class="todo-list-item">
-                  Hello World
-                  <span class="todo-item-right ">
-                      45 
-                      <i class="icon ion-ios-telephone-outline"></i>
-                  </span>
-              </div>
-              <div ng-repeat="task in model.tasks" class="todo-list-item">
-                  {{task.taskName}}
-              </div>
-          </div>
-          <button ng-click="init()">CLICK ME</button>
-      </div>
-</ion-content>
+    <ion-header-bar>
+        <div class="home-header-button">
+            <i class="icon ion-plus-circled plus-button"></i>
+        </div>
+
+    </ion-header-bar>
+    <ion-content>
+        <div class="page-has-header">
+            <div id="pageSpinner">
+                <div class="spinner">
+                    <ion-spinner class="spinner"></ion-spinner>
+                </div>
+            </div>
+            <div id="page-content" class="page-content">
+                <div class="todo-list">
+                    <div ng-repeat="timeframe in model.timeFrames">
+                        <div class="todo-list-item todo-list-divider">
+                            {{timeframe.name}}
+                        </div>
+                        <div ng-if="timeframe.tasks.length == 0" class="todo-list-item">
+                            No tasks added for this time
+                        </div>  
+                        <div ng-repeat="task in timeframe.tasks">
+
+                            <div class="todo-list-item">
+                                {{task.taskName}}
+                                <span class="todo-item-right ">
+                                    {{task.productivityPoints}}
+                                    <i class="icon ion-ios-telephone-outline"></i>
+                                </span>
+                            </div>
+                            <div class="todo-list-item" ng-repeat="subTask in task.subTasks">
+                                - {{subTask.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>

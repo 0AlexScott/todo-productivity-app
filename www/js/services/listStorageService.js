@@ -6,7 +6,7 @@
         if (!service.db) {
             service.db = window.sqlitePlugin.openDatabase({ name: "my.storage.db" });
             service.db.executeSql('CREATE TABLE IF NOT EXISTS list_table (id integer primary key, listName text, deletable integer);');
-            service.db.executeSql('CREATE TABLE IF NOT EXISTS task_table (id integer primary key, listId integer, taskName text, subTasks text, completionDate text, productivityPoints integer, reminder integer);');
+            service.db.executeSql('CREATE TABLE IF NOT EXISTS task_table (id integer primary key, listId integer, taskName text, subTasks text, completionDate integer, productivityPoints integer, reminder integer);');
 
             console.log("ListService initialising");
             if (!service.db) {
@@ -33,11 +33,10 @@
                     console.log("FirstTimeOpen = true, lists being initialised");
                     service.createList('Todo: Next few days', 0);
                     service.createList('Todo: Some day', 0);
+                    service.createList('Incomplete tasks', 0);
                     var d = new Date();
-                    var n = d.getDate();
-                    var m = d.getMonth();
-                    var date = n + "/" + m;
-                    service.createTask(1, 'Make new list', '[{\"name\":\"Create list from side menu\"}, {\"name\":\"Open list and add new task\"}]', date, 50, 0);
+                    var milli = d.getTime();
+                    service.createTask(1, 'Make new list', '[{\"name\":\"Create list from side menu\"}, {\"name\":\"Open list and add new task\"}]', milli, 50, 0);
                     $rootScope.$broadcast("listStorageInitialised");
                     resolve(true);
                 }
@@ -66,6 +65,7 @@
         return $q(function (resolve, reject) {
             service.db.executeSql("INSERT INTO task_table (listId, taskName, subTasks, completionDate, productivityPoints, reminder) " +
                 "VALUES (?, ?, ?, ?, ?, ?);", [listId, taskName, subTasks, completionDate, productivityPoints, reminder], function (res) {
+                    console.log("Task created with time: " + completionDate);
                     resolve(true);
                 }, function (error) {
                     console.log('INSERT error: ' + error.message);
