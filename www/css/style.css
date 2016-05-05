@@ -47,7 +47,7 @@ button.sidemenu-button:before {
     z-index: 2;
     display: block;
     margin: -1px;
-    padding: 12px;
+    padding: 12px 12px 0px 12px;
     font-size: 16px;
 }
 
@@ -69,4 +69,12 @@ button.sidemenu-button:before {
 .pink-button {
     background-color:#FF686B; 
     color: #FFFFFF;
+}
+
+.sub-task {
+    padding: 0px 0px 0px 25px;
+}
+
+.eighty-width {
+    width:80%;
 }

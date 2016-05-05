@@ -58,6 +58,16 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
         },
         cache: false,
         params:{listId: 1}
+    })
+    .state('app.taskView', {
+        url: '/taskView?taskId',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/taskView.html',
+                controller: 'TaskViewCtrl'
+            }
+        },
+        cache: false
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');

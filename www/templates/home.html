@@ -16,12 +16,12 @@
                 <div class="todo-list">
                     <div ng-repeat="timeframe in model.timeFrames">
                         <div class="todo-list-item todo-list-divider">
-                            {{timeframe.name}}
+                            <b>{{timeframe.name}}</b>
                         </div>
                         <div ng-if="timeframe.tasks.length == 0" class="todo-list-item">
                             <i>No tasks added for this time</i>
                         </div>  
-                        <div ng-repeat="task in timeframe.tasks">
+                        <div ng-repeat="task in timeframe.tasks" ui-sref="app.taskView({taskId: task.id})">
 
                             <div class="todo-list-item">
                                 {{task.taskName}}
@@ -30,7 +30,7 @@
                                     <i class="icon ion-ios-telephone-outline"></i>
                                 </span>
                             </div>
-                            <div class="todo-list-item" ng-repeat="subTask in task.subTasks">
+                            <div class="todo-list-item sub-task" ng-repeat="subTask in task.subTasks">
                                 - {{subTask.name}}
                             </div>
                         </div>

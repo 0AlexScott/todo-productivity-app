@@ -20,9 +20,6 @@
     };
 
     service.firstTimeOpen = function () {
-        //1: check if any lists are in list_table
-        //2: if yes, do nothing
-        //3: if no, create two lists and add task to list
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT id FROM list_table;", [], function (res) {
                 if (res.rows.length > 0) {
@@ -61,6 +58,22 @@
         });
     };
 
+    service.getLists = function () {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("SELECT * FROM list_table;", [], function (res) {
+                var rows = res.rows;
+                var sanitizedRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                    sanitizedRows[i] = rows.item(i);
+                }
+                console.log("Get Lists executed in listStorageService");
+                resolve(sanitizedRows);
+            }, function (error) {
+                reject(console.log('SELECT error in getLists'));
+            });
+        });
+    };
+
     service.createTask = function (listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
         return $q(function (resolve, reject) {
             service.db.executeSql("INSERT INTO task_table (listId, taskName, subTasks, completionDate, productivityPoints, reminder) " +
@@ -90,8 +103,30 @@
     service.getTasksInList = function (listId) {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT * FROM task_table WHERE listId=?;", [listId], function (res) {
+                var rows = res.rows;
+                var sanitizedRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                    sanitizedRows[i] = rows.item(i);
+                    sanitizedRows[i].subTasks = angular.fromJson(rows.item(i).subTasks);
+                    sanitizedRows[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));                    
+                }
                 console.log("Tasks in list retrieved");
-                resolve(res.rows);
+                resolve(sanitizedRows);
+            }, function (error) {
+                reject(console.log('SELECT error in getTasksInList'));
+            });
+        });
+    };
+
+    service.getTask = function (taskId) {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("SELECT * FROM task_table WHERE id=?;", [taskId], function (res) {
+                var rows = res.rows;
+                var sanitizedRow = rows.item(0);
+                sanitizedRow.subTasks = angular.fromJson(rows.item(0).subTasks);
+                sanitizedRow.completionDate = new Date(parseInt(rows.item(0).completionDate, 10));                
+                console.log("Task retrieved with id " + taskId);
+                resolve(sanitizedRow);
             }, function (error) {
                 reject(console.log('SELECT error in getTasksInList'));
             });

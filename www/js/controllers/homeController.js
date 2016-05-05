@@ -1,7 +1,6 @@
-angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorageService', '$timeout', function($scope, listStorageService, $timeout) {
-
-  
-    
+angular.module('app.controllers').controller('HomeCtrl',
+    ['$scope', 'listStorageService', '$timeout', '$state', 
+     function($scope, listStorageService, $timeout, $state) {
 
     $scope.model = {};
     $scope.model.tasks = [];
@@ -14,15 +13,11 @@ angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorage
         $("#pageSpinner").show();
         $("#page-content").hide();
 
+        $scope.init();
         $scope.loadTasks(1);
         
     });
-
-    //$scope.$on("listStorageInitialised", function () {
-    //    $scope.loadTasks(1);
-                
-    //});
-
+         
     $scope.init = function () {
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
@@ -35,31 +30,27 @@ angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorage
 
     $scope.loadTasks = function (listId) {
         listStorageService.getTasksInList(listId).then(function (rows) {
-            $scope.model.tasks = [];
-            for (var i = 0; i < rows.length; i++) {
-                console.log(rows.item(i));
-                $scope.model.tasks[i] = rows.item(i);
-                $scope.model.tasks[i].subTasks = angular.fromJson(rows.item(i).subTasks);
-                $scope.model.tasks[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
+            $scope.model.tasks = rows;
+            for (var i = 0; i < $scope.model.tasks.length; i++) {
                 $scope.addTaskToTimeFrame($scope.model.tasks[i]);
-            }
+            }            
             $("#pageSpinner").hide();
             $("#page-content").show();
         }, function (error) { console.log("Error in $scope.loadTasks") });
     };
 
     $scope.addTaskToTimeFrame = function (task) {
-
         for (var i = $scope.model.timeFrames.length -1; i > -1; i--) {
             if (task.completionDate > $scope.model.timeFrames[i].time) {
                 $scope.model.timeFrames[i].tasks.push(task);
                 return 0;
             }
         }
-
     };
 
-    $scope.init();
+    //$scope.openTaskDetails = function (taskId) {
+    //    $state.go('app.taskView', { taskId: taskId });
+    //};
 
 
 }]);
