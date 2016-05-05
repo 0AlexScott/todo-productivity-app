@@ -46,7 +46,8 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
     .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html'
+    templateUrl: 'templates/menu.html',
+    controller: 'MenuCtrl'
   })
     .state('app.home', {
       url: '/home',

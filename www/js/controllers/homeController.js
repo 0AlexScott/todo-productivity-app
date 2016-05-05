@@ -6,20 +6,21 @@ angular.module('app.controllers').controller('HomeCtrl',
     $scope.model.tasks = [];
     $scope.model.timeFrames = [];
     
-
+    //add a 'loader' to page as it is opening
     $scope.$on('$ionicView.beforeEnter', function (e) {
         $("#pageSpinner").show();
         $("#page-content").hide();
     });
 
-    $scope.$on('$ionicView.enter', function (e) {
-        
+    $scope.$on('$ionicView.enter', function (e) {        
+        //init tasks and add them to their respective lists
         $scope.init();
         $scope.loadTasks(1);
         
     });
          
     $scope.init = function () {
+        //set timespans for view in page
         var date = new Date();
         var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
         var tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, 0, 0);
@@ -29,6 +30,7 @@ angular.module('app.controllers').controller('HomeCtrl',
         $scope.model.timeFrames[2] = { name: 'After', time: after, tasks: [] };
     }
 
+    //load tasks in the list, and assign them to a timespan
     $scope.loadTasks = function (listId) {
         listStorageService.getTasksInList(listId).then(function (rows) {
             $scope.model.tasks = rows;
@@ -48,10 +50,6 @@ angular.module('app.controllers').controller('HomeCtrl',
             }
         }
     };
-
-    //$scope.openTaskDetails = function (taskId) {
-    //    $state.go('app.taskView', { taskId: taskId });
-    //};
 
 
 }]);

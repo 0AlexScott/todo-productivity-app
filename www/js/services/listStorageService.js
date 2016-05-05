@@ -2,6 +2,7 @@
 
     var service = {};
 
+    //Init db
     service.init = function () {
         if (!service.db) {
             service.db = window.sqlitePlugin.openDatabase({ name: "my.storage.db" });
@@ -19,6 +20,7 @@
         }
     };
 
+    //If the database has just been created - we need to create a number of default lists
     service.firstTimeOpen = function () {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT id FROM list_table;", [], function (res) {
@@ -41,11 +43,9 @@
                 reject(console.log('SELECT error in $scope.firstTimeOpen'));
             });
         });
-
-
-
     };
 
+    //function to add list to table
     service.createList = function (listName, deletable) {
         return $q(function (resolve, reject) {
             service.db.executeSql("INSERT INTO list_table (listName, deletable) " +
@@ -58,6 +58,7 @@
         });
     };
 
+    //function to retrieve all lists
     service.getLists = function () {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT * FROM list_table;", [], function (res) {
@@ -74,6 +75,7 @@
         });
     };
 
+    //function to create a task
     service.createTask = function (listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
         return $q(function (resolve, reject) {
             service.db.executeSql("INSERT INTO task_table (listId, taskName, subTasks, completionDate, productivityPoints, reminder) " +
@@ -87,6 +89,7 @@
         });
     };
 
+    //function to update a task
     service.updateTask = function (id, listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
         return $q(function (resolve, reject) {
             service.db.executeSql("UPDATE task_table SET [listId] = ?, [taskName] = ?, [subTasks] = ?, [completionDate] = ?, [productivityPoints] = ?, [reminder] = ? " +
@@ -100,6 +103,7 @@
         });
     };
 
+    //get all tasks in list
     service.getTasksInList = function (listId) {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT * FROM task_table WHERE listId=?;", [listId], function (res) {
@@ -118,6 +122,7 @@
         });
     };
 
+    //get single task
     service.getTask = function (taskId) {
         return $q(function (resolve, reject) {
             service.db.executeSql("SELECT * FROM task_table WHERE id=?;", [taskId], function (res) {
@@ -133,6 +138,7 @@
         });
     };
 
+    //delete task
     service.deleteTask = function (taskId) {
         return $q(function (resolve, reject) {
             service.db.executeSql("DELETE FROM task_table WHERE id=?;", [taskId], function (res) {
