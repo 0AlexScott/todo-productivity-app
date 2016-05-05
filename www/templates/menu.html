@@ -18,10 +18,13 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close >
-          Lists <span class="todo-item-right"><i class="icon ion-plus-circled plus-button"></i></span>
+        <ion-item menu-close style="padding-bottom:0px;">
+          <span style="font-size:28px">Lists</span>
+           <span class="todo-item-right" style="margin-top:-8px;">
+            <i class="icon ion-plus-circled plus-button-medium"></i>
+           </span>
         </ion-item>
-        <ion-item menu-close ng-repeat="list in model.lists">
+        <ion-item menu-close ng-repeat="list in model.lists" ui-sref="app.home">
             {{list.listName}}
         </ion-item>
       </ion-list>

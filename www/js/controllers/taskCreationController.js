@@ -17,7 +17,7 @@
 
         //This is used to disable the save button if properties are incorrect
         $scope.checkValid = function () {
-            if ($scope.model.newTask.name != '' && $scope.model.newTask.completionDate && $scope.model.newTask.subTasks[0].name != '') {
+            if ($scope.model.newTask.name != '' && $scope.model.newTask.completionDate) {
                 return false;
             }
             return true;
