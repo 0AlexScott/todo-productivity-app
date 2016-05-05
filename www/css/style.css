@@ -65,3 +65,8 @@ button.sidemenu-button:before {
     float:right;
     margin-right: 5px;
 }
+
+.pink-button {
+    background-color:#FF686B; 
+    color: #FFFFFF;
+}

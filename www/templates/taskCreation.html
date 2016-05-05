@@ -24,15 +24,26 @@
             </div>
             <div class="list">
                 <label class="item-input item-stacked-label">
-                    <span>When?</span>
+                    <span class="input-label">When?</span>
                 </label>
-                <div class="list-item">
+                <!--<div class="list-item">
                     <span class="input-group" style="text-align:center">
                         <input type="text" uib-datepicker-popup ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="open1()"><i class="icon ion-ios-calendar-outline"></i></button>
                         </span>
                     </span>
+                </div>-->
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input type="text" class="form-control" data-ng-model="model.newTask.completionDate">
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="model.newTask.completionDate" data-before-render="timepickerBeforeRender($view, $dates, $leftDate, $upDate, $rightDate)" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }" />
+                    </ul>
                 </div>
                 <div class="todo-list-item todo-list-divider">
                 </div>
@@ -46,6 +57,12 @@
                 </div>
                 <div class="todo-list-item todo-list-divider">
                 </div>
+                <div style="text-align:center;">
+                    <button class="button button-large icon-right ion-ios-download pink-button" ng-click="saveTask()" ng-disabled="checkValid()">
+                        SAVE
+                    </button>
+                </div>
+                
             </div>
 
 

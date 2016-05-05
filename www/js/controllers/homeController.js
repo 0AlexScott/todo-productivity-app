@@ -1,25 +1,27 @@
 angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorageService', '$timeout', function($scope, listStorageService, $timeout) {
 
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+  
+    
 
     $scope.model = {};
     $scope.model.tasks = [];
-    $scope.model.pageReady = false;
     $scope.model.timeFrames = [];
     
     $("#pageSpinner").show();
     $("#page-content").hide();
 
-    $scope.$on("listStorageInitialised", function () {
-        $scope.loadTasks(1);
-        $scope.model.pageReady = true;
+    $scope.$on('$ionicView.enter', function (e) {
+        $("#pageSpinner").show();
+        $("#page-content").hide();
 
-        $("#pageSpinner").hide();
-        $("#page-content").show();
+        $scope.loadTasks(1);
+        
     });
+
+    //$scope.$on("listStorageInitialised", function () {
+    //    $scope.loadTasks(1);
+                
+    //});
 
     $scope.init = function () {
         var date = new Date();
@@ -41,6 +43,8 @@ angular.module('app.controllers').controller('HomeCtrl', ['$scope', 'listStorage
                 $scope.model.tasks[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
                 $scope.addTaskToTimeFrame($scope.model.tasks[i]);
             }
+            $("#pageSpinner").hide();
+            $("#page-content").show();
         }, function (error) { console.log("Error in $scope.loadTasks") });
     };
 

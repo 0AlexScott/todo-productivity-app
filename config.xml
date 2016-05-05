@@ -45,4 +45,10 @@
     <splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" density="port-xxhdpi"/>
     <splash src="resources/android/splash/drawable-port-xxxhdpi-screen.png" density="port-xxxhdpi"/>
   </platform>
+  <staticContent>
+    <remove fileExtension=".woff" />
+    <remove fileExtension=".woff2" />
+    <mimeMap fileExtension=".woff" mimeType="application/font-woff" />
+    <mimeMap fileExtension=".woff2" mimeType="application/font-woff" />
+  </staticContent>
 </widget>
