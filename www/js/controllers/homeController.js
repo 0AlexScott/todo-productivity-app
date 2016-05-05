@@ -6,13 +6,14 @@ angular.module('app.controllers').controller('HomeCtrl',
     $scope.model.tasks = [];
     $scope.model.timeFrames = [];
     
-    $("#pageSpinner").show();
-    $("#page-content").hide();
 
-    $scope.$on('$ionicView.enter', function (e) {
+    $scope.$on('$ionicView.beforeEnter', function (e) {
         $("#pageSpinner").show();
         $("#page-content").hide();
+    });
 
+    $scope.$on('$ionicView.enter', function (e) {
+        
         $scope.init();
         $scope.loadTasks(1);
         

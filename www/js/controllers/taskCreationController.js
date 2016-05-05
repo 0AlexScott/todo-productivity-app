@@ -33,8 +33,8 @@
             listStorageService.createTask($stateParams.listId, $scope.model.newTask.taskName, subTasks, $scope.model.newTask.completionDate.getTime(), $scope.model.newTask.productivityPoints, false)
                 .then(function (success) {
                     if (success) {
-                        window.plugins.toast.showLongTop('Task created successfully!');
-                        $state.go('app.home');
+                        window.plugins.toast.showLongCenter('Task created successfully!');
+                        $state.go($rootScope.previousState, $rootScope.previousStateParams);
                     }
                 }, function (error) { 
                     console.log("Error in $scope.saveTask")

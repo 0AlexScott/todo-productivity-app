@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.bootstrap', 'ui.bootstrap.datetimepicker'])
 
-.run(['$ionicPlatform', 'listStorageService', function ($ionicPlatform, listStorageService) {
+.run(['$ionicPlatform', 'listStorageService', '$rootScope', 'productivityService', function ($ionicPlatform, listStorageService, $rootScope, productivityService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -25,8 +25,17 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
 
   function onDeviceReady() {
       listStorageService.init();
-      
+      productivityService.init();
   }
+
+  $rootScope.previousState;
+  $rootScope.previousStateParams;
+
+  $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+      $rootScope.previousState = from.name;
+      $rootScope.previousStateParams = fromParams;
+      console.log('Previous state:' + $rootScope.previousState + '. Params: ' + fromParams);
+  });
 
 
 }])

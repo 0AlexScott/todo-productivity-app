@@ -133,6 +133,16 @@
         });
     };
 
+    service.deleteTask = function (taskId) {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("DELETE FROM task_table WHERE id=?;", [taskId], function (res) {
+                resolve(true);
+            }, function (error) {
+                reject(console.log('SELECT error: ' + error.message));
+            });
+        });
+    };
+
 
     return service;
 }

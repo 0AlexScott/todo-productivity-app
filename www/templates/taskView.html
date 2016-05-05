@@ -2,7 +2,7 @@
     <ion-content>
         <div class="page-content">
             <div style="text-align:center;">
-                <button class="button icon-right ion-ios-download pink-button eighty-width" ng-click="">
+                <button class="button icon-right ion-checkmark-round pink-button eighty-width" ng-click="completeTask()">
                     Complete Task
                 </button>
                 <br />
@@ -47,21 +47,22 @@
             <div style="text-align: center;padding:20px 0px 10px 0px;">
                 <div style="font-size:36px;">
                     {{model.task.productivityPoints}}
+                    <img src="img/pp.png" style="width:32px;height:32px;" />
                 </div>
                 <br />
             </div>
             <div style="text-align:center;">
-                <button class="button icon-right ion-ios-download pink-button eighty-width" ng-click="">
+                <button class="button icon-right ion-ios-download pink-button eighty-width" ng-click="saveChanges()">
                     Save Changes to Task
                 </button>
                 <br />
                 <br />
-                <button class="button icon-right ion-ios-download pink-button eighty-width" ng-click="">
-                    Change list
+                <button class="button icon-right ion-ios-loop-strong pink-button eighty-width" ng-click="repeatTaskOneDayLater()">
+                    Repeat the following day
                 </button>
                 <br />
                 <br />
-                <button class="button icon-right ion-ios-download pink-button eighty-width" ng-click="">
+                <button class="button icon-right ion-trash-a pink-button eighty-width" ng-click="deleteTask()">
                     Delete Task
                 </button>
             </div>
