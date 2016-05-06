@@ -21,7 +21,7 @@
                         <div ng-if="timeframe.tasks.length == 0" class="todo-list-item">
                             <i>No tasks added for this time</i>
                         </div>  
-                        <div ng-repeat="task in timeframe.tasks" ui-sref="app.taskView({taskId: task.id})">
+                        <div ng-repeat="task in timeframe.tasks | orderBy:'completionDate'" ui-sref="app.taskView({taskId: task.id})">
 
                             <div class="todo-list-item">
                                 {{task.taskName}}
