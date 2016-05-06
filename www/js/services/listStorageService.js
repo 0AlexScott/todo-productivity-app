@@ -112,7 +112,7 @@
     service.updateTask = function (id, listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
         return $q(function (resolve, reject) {
             service.db.executeSql("UPDATE task_table SET [listId] = ?, [taskName] = ?, [subTasks] = ?, [completionDate] = ?, [productivityPoints] = ?, [reminder] = ? " +
-                "WHERE id=?);"
+                "WHERE id=?;"
                 , [listId, taskName, subTasks, completionDate, productivityPoints, reminder, id], function (res) {
                     resolve(true);
                 }, function (error) {

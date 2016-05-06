@@ -1,7 +1,7 @@
 <ion-view view-title="{{model.list.listName}}">
     <ion-header-bar>
         <div class="home-header-button" ng-show="model.pageLoaded">
-            <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: 1})"></i>
+            <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: model.list.id})"></i>
         </div>
 
     </ion-header-bar>

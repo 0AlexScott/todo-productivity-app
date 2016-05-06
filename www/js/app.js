@@ -30,6 +30,7 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
 
     $rootScope.previousState;
     $rootScope.previousStateParams;
+    $rootScope.servicesLoaded = false;
 
     $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
         $rootScope.previousState = from.name;

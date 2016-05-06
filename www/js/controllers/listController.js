@@ -1,9 +1,9 @@
 angular.module('app.controllers').controller('ListCtrl',
-    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams',
-     function ($scope, listStorageService, $timeout, $state, $stateParams) {
+    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope',
+     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope) {
 
          $scope.model = {};
-         $scope.model.list = {id: 0};
+         $scope.model.list = { id: 0 };
          $scope.model.tasks = [];
          $scope.model.timeFrames = [];
          $scope.model.pageLoaded = false;
@@ -17,15 +17,19 @@ angular.module('app.controllers').controller('ListCtrl',
 
          //init tasks and add them to their respective lists when the view is entered
          $scope.$on('$ionicView.enter', function (e) {
-             if ($stateParams.listId != $scope.model.list.id) {
-                    $scope.initTimeFramesAndLoadTasks();
-             } else {
-                    $scope.loadTasks($stateParams.listId);
+             if ($rootScope.servicesLoaded) {
+                 if ($stateParams.listId != $scope.model.list.id) {
+                     $scope.initTimeFramesAndLoadTasks();
+                 } else {
+                     $scope.loadTasks($stateParams.listId);
+                 }
              }
+
          });
 
          $scope.$on("listStorageInitialised", function () {
              $scope.initTimeFramesAndLoadTasks();
+             $rootScope.servicesLoaded = true;
          });
 
          $scope.initTimeFramesAndLoadTasks = function () {
@@ -46,7 +50,7 @@ angular.module('app.controllers').controller('ListCtrl',
                     weekday[3] = "Wednesday";
                     weekday[4] = "Thursday";
                     weekday[5] = "Friday";
-                    weekday[6] = "Saturday";                    
+                    weekday[6] = "Saturday";
 
                     var nextDay = weekday[dayAfter.getDay()] + ' ' + $scope.getDateString(dayAfter);
                     var after = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3, 0, 0, 0);
@@ -61,7 +65,7 @@ angular.module('app.controllers').controller('ListCtrl',
                         $scope.model.timeFrames[3] = { name: 'After', time: after, tasks: [] };
                     } else if (list.listType == 'weekly') {
                     }
-                        
+
 
                     $scope.loadTasks(list.id);
                 }, function (error) { });
@@ -69,8 +73,8 @@ angular.module('app.controllers').controller('ListCtrl',
 
          $scope.getDateString = function (date) {
              var d = date.getDate();
-             var dS  = d.toString();
-             var sS = dS.substring(dS.length-1, dS.length);
+             var dS = d.toString();
+             var sS = dS.substring(dS.length - 1, dS.length);
              var arr = parseInt(sS);
              var endings = new Array(4);
              endings[0] = "st";
