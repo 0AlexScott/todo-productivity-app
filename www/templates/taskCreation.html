@@ -26,14 +26,6 @@
                 <label class="item-input item-stacked-label">
                     <span class="input-label">When?</span>
                 </label>
-                <!--<div class="list-item">
-                    <span class="input-group" style="text-align:center">
-                        <input type="text" uib-datepicker-popup ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="icon ion-ios-calendar-outline"></i></button>
-                        </span>
-                    </span>
-                </div>-->
                 <div class="dropdown">
                     <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group">
@@ -51,9 +43,9 @@
                     <span class="input-label">Productivity Points</span> {{model.newTask.productivityPoints}} <img src="img/pp.png" style="width:19px;height:19px;" />
                 </label>
                 <div class="range range-positive">
-                    <i class="icon ion-ios-sunny-outline"></i>
+                    <img src="img/pp.png" style="width:10px;height:10px;" />
                     <input type="range" name="volume" min="0" max="100" value="{{model.newTask.productivityPoints}}" ng-model="model.newTask.productivityPoints">
-                    <i class="icon ion-ios-sunny"></i>
+                    <img src="img/pp.png" style="width:21px;height:21px;" />
                 </div>
                 <div class="todo-list-item todo-list-divider">
                 </div>
@@ -62,10 +54,7 @@
                         SAVE
                     </button>
                 </div>
-                
             </div>
-
-
         </div>
     </ion-content>
 </ion-view>

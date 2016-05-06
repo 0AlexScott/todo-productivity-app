@@ -84,3 +84,16 @@ button.sidemenu-button:before {
 .eighty-width {
     width:80%;
 }
+
+div.spinner {
+    margin: 0 auto;
+    position: absolute;
+    top: 100px; left: 0; bottom: 0; right: 0;
+    height: 85px;
+    text-align: center;
+}
+
+.spinner svg {
+  width: 56px;
+  height: 56px;
+}
