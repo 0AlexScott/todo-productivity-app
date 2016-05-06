@@ -1,4 +1,4 @@
-<ion-view view-title="Todo: Next few days">
+<ion-view view-title="{{model.list.listName}}">
     <ion-header-bar>
         <div class="home-header-button" ng-show="model.pageLoaded">
             <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: 1})"></i>
@@ -7,12 +7,12 @@
     </ion-header-bar>
     <ion-content>
         <div class="page-has-header">
-            <div id="pageSpinner">
+            <div class="pageSpinner">
                 <div class="spinner">
                     <ion-spinner class="spinner"></ion-spinner>
                 </div>
             </div>
-            <div id="page-content" class="page-content">
+            <div class="page-content">
                 <div class="todo-list">
                     <div ng-repeat="timeframe in model.timeFrames">
                         <div class="todo-list-item todo-list-divider">

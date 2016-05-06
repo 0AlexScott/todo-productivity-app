@@ -1,6 +1,6 @@
 ﻿angular.module('app.controllers').controller('ListCreationCtrl',
-    ['$scope', 'listStorageService', '$timeout', '$stateParams', '$state', '$rootScope',
-    function ($scope, listStorageService, $timeout, $stateParams, $state, $rootScope) {
+    ['$scope', 'listStorageService', '$timeout', '$stateParams', '$state', '$rootScope', '$ionicHistory',
+    function ($scope, listStorageService, $timeout, $stateParams, $state, $rootScope, $ionicHistory) {
 
         //Init variables in task creation
         $scope.model = {};
@@ -25,6 +25,9 @@
                 .then(function (listId) {
                     console.log("List created with ID" + listId);
                     window.plugins.toast.show('List created successfully.\n\nRedirecting...', '1000', 'center');
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
                     $state.go('app.list', ({listId: listId}))
                 }, function (error) { console.log("Error in saveList") });
         };

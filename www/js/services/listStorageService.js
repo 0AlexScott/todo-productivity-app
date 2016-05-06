@@ -28,6 +28,7 @@
             service.db.executeSql("SELECT id FROM list_table;", [], function (res) {
                 if (res.rows.length > 0) {
                     console.log("FirstTimeOpen = false, no new lists");
+                    $rootScope.$broadcast("listStorageInitialised");
                     resolve(true);
                 } else {
                     console.log("FirstTimeOpen = true, lists being initialised");
@@ -82,14 +83,16 @@
     };
 
     //function to retrieve specific list
-    //service.getListById = function (listId) {
-    //    return $q(function (resolve, reject) {
-    //        service.db.executeSql("SELECT * FROM list_table WHERE id=?;", [listId], function (res) {
-    //        }, function (error) {
-    //            reject(console.log('SELECT error in getLists'));
-    //        });
-    //    });
-    //};
+    service.getListById = function (listId) {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("SELECT * FROM list_table WHERE id=?;", [listId], function (res) {
+                console.log("List retrieved with id " + listId);
+                resolve(res.rows.item(0));
+            }, function (error) {
+                reject(console.log('SELECT error in getLists'));
+            });
+        });
+    };
 
     //function to create a task
     service.createTask = function (listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
