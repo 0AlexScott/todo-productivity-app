@@ -2,6 +2,7 @@
     <ion-header-bar>
         <div class="home-header-button" ng-show="model.pageLoaded">
             <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: model.list.id})"></i>
+                <i class="icon ion-android-more-vertical plus-button" style="width:15px" ng-click="openPopover($event)"></i>
         </div>
 
     </ion-header-bar>
@@ -22,7 +23,6 @@
                             <i>No tasks added for this time</i>
                         </div>  
                         <div ng-repeat="task in timeframe.tasks | orderBy:'completionDate'" ui-sref="app.taskView({taskId: task.id})">
-
                             <div class="todo-list-item">
                                 {{task.taskName}}
                                 <span class="todo-item-right ">

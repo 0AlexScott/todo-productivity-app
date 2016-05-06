@@ -1,6 +1,6 @@
 angular.module('app.controllers').controller('ListCtrl',
-    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope',
-     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope) {
+    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope', '$ionicPopover',
+     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope, $ionicPopover) {
 
          $scope.model = {};
          $scope.model.list = { id: 0 };
@@ -24,9 +24,9 @@ angular.module('app.controllers').controller('ListCtrl',
                      $scope.loadTasks($stateParams.listId);
                  }
              }
-
          });
 
+         //we wait for the service to get initialised before loading the initial task (for homepage)
          $scope.$on("listStorageInitialised", function () {
              $scope.initTimeFramesAndLoadTasks();
              $rootScope.servicesLoaded = true;
@@ -37,6 +37,8 @@ angular.module('app.controllers').controller('ListCtrl',
                 .then(function (list) {
                     $scope.model.list = list;
                     $scope.model.timeFrames = [];
+
+                    //the following code sets up the 'timeframes' which will be used to present the tasks to the user based on the type of list
 
                     var date = new Date();
                     var early = new Date(0);
@@ -71,6 +73,7 @@ angular.module('app.controllers').controller('ListCtrl',
                 }, function (error) { });
          };
 
+         //function to return the date + 'th' from a given date to prettify it in view
          $scope.getDateString = function (date) {
              var d = date.getDate();
              var dS = d.toString();
@@ -112,6 +115,19 @@ angular.module('app.controllers').controller('ListCtrl',
                      return 0;
                  }
              }
+         };
+
+         var template = '<ion-popover-view><ion-header-bar> <h1 class="title">My Popover Title</h1> </ion-header-bar> <ion-content> {{model.list.id}} </ion-content></ion-popover-view>';
+
+         $scope.popover = $ionicPopover.fromTemplate(template, {
+             scope: $scope
+         });
+
+         $scope.openPopover = function ($event) {
+             $scope.popover.show($event);
+         };
+         $scope.closePopover = function () {
+             $scope.popover.hide();
          };
 
 
