@@ -20,11 +20,11 @@
       <ion-list>
         <ion-item menu-close style="padding-bottom:0px;">
           <span style="font-size:28px">Lists</span>
-           <span class="todo-item-right" style="margin-top:-8px;">
+           <span class="todo-item-right" style="margin-top:-8px;" ui-sref="app.listCreation">
             <i class="icon ion-plus-circled plus-button-medium"></i>
            </span>
         </ion-item>
-        <ion-item menu-close ng-repeat="list in model.lists" ui-sref="app.home">
+        <ion-item menu-close ng-repeat="list in model.lists" ui-sref="app.list({listId: list.id})">
             {{list.listName}}
         </ion-item>
       </ion-list>

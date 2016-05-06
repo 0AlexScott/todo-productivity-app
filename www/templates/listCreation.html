@@ -1,0 +1,27 @@
+﻿<ion-view view-title="Create list">
+    <ion-content>
+        <div class="page-content">
+            <div class="todo-list">
+                <div class="todo-list-item todo-list-divider">
+                    <b>List Name</b>
+                </div>
+                <div class="todo-list-item">
+                    <input type="text" ng-model="list.listName" placeholder="Name">
+                </div>
+                <div class="todo-list-item todo-list-divider">
+                    <b>List Type</b>
+                </div>                
+                <div class="todo-list-item">
+                    <select ng-options="type.savedAs as type.name for type in model.listTypes" ng-model="task.listType" ng-init="task.listType = model.listTypes[1].savedAs"></select>
+                </div>
+                <div class="todo-list-item todo-list-divider">
+                </div>
+                <div style="text-align:center;">
+                    <button class="button button-large icon-right ion-ios-download pink-button" ng-click="saveList()" ng-disabled="checkValid()">
+                        SAVE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

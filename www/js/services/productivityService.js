@@ -5,7 +5,7 @@
     //Init productivity serivce, create table if none exist
     service.init = function () {
         if (!service.db) {
-            service.db = window.sqlitePlugin.openDatabase({ name: "my.storage.db" });
+            service.db = window.sqlitePlugin.openDatabase({ name: "my.productivityPoints.db" });
             service.db.executeSql('CREATE TABLE IF NOT EXISTS productivity_transactions (id integer primary key, pointsAwarded integer, completionDate integer);');
 
         }

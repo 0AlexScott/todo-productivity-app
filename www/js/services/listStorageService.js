@@ -5,16 +5,18 @@
     //Init db
     service.init = function () {
         if (!service.db) {
-            service.db = window.sqlitePlugin.openDatabase({ name: "my.storage.db" });
-            service.db.executeSql('CREATE TABLE IF NOT EXISTS list_table (id integer primary key, listName text, deletable integer);');
+            service.db = window.sqlitePlugin.openDatabase({ name: "my.listAndTask.db" });
+            service.db.executeSql('CREATE TABLE IF NOT EXISTS list_table (id integer primary key, listName text UNIQUE, listType text, deletable integer);');
             service.db.executeSql('CREATE TABLE IF NOT EXISTS task_table (id integer primary key, listId integer, taskName text, subTasks text, completionDate integer, productivityPoints integer, reminder integer);');
 
             console.log("ListService initialising");
             if (!service.db) {
+                console.log("List Service timing 4000ms");
                 $timeout(
                     service.firstTimeOpen(),
                 4000);
             } else {
+                console.log("List Service executing first time open");
                 service.firstTimeOpen();
             }
         }
@@ -26,13 +28,12 @@
             service.db.executeSql("SELECT id FROM list_table;", [], function (res) {
                 if (res.rows.length > 0) {
                     console.log("FirstTimeOpen = false, no new lists");
-                    $rootScope.$broadcast("listStorageInitialised");
                     resolve(true);
                 } else {
                     console.log("FirstTimeOpen = true, lists being initialised");
-                    service.createList('Todo: Next few days', 0);
-                    service.createList('Todo: Some day', 0);
-                    service.createList('Incomplete tasks', 0);
+                    service.createList('Todo: Next few days', 'daily', 0);
+                    service.createList('Todo: Some day', 'simple', 0);
+                    service.createList('Incomplete tasks', 'simple', 0);
                     var d = new Date();
                     var milli = d.getTime();
                     service.createTask(1, 'Make new list', '[{\"name\":\"Create list from side menu\"}, {\"name\":\"Open list and add new task\"}]', milli, 50, 0);
@@ -46,11 +47,16 @@
     };
 
     //function to add list to table
-    service.createList = function (listName, deletable) {
+    service.createList = function (listName, listType, deletable) {
         return $q(function (resolve, reject) {
-            service.db.executeSql("INSERT INTO list_table (listName, deletable) " +
-                "VALUES (?, ?);", [listName, deletable], function (res) {
-                    resolve(true);
+            service.db.executeSql("INSERT INTO list_table (listName, listType, deletable) " +
+                "VALUES (?, ?, ?);", [listName, listType, deletable], function (res) {
+                    service.db.executeSql("SELECT * FROM list_table WHERE listName=?;", [listName], function (res) {
+                        resolve(res.rows.item(0).id);
+                    }, function (error) {
+                        console.log('Select error in createList')
+                        reject(false);
+                    });
                 }, function (error) {
                     console.log('INSERT error: ' + error.message);
                     reject(false);
@@ -74,6 +80,16 @@
             });
         });
     };
+
+    //function to retrieve specific list
+    //service.getListById = function (listId) {
+    //    return $q(function (resolve, reject) {
+    //        service.db.executeSql("SELECT * FROM list_table WHERE id=?;", [listId], function (res) {
+    //        }, function (error) {
+    //            reject(console.log('SELECT error in getLists'));
+    //        });
+    //    });
+    //};
 
     //function to create a task
     service.createTask = function (listId, taskName, subTasks, completionDate, productivityPoints, reminder) {
