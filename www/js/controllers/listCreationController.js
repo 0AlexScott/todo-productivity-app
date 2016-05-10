@@ -21,7 +21,7 @@
 
         //Save the list and redirect the user to its containing page
         $scope.saveList = function () {
-            listStorageService.createList($scope.list.listName, $scope.list.listType, true)
+            listStorageService.createList($scope.list.listName, $scope.list.listType, 1)
                 .then(function (listId) {
                     console.log("List created with ID" + listId);
                     window.plugins.toast.show('List created successfully.\n\nRedirecting...', '1000', 'center');

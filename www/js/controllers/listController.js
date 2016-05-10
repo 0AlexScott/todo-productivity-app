@@ -1,6 +1,6 @@
 angular.module('app.controllers').controller('ListCtrl',
-    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope', '$ionicPopup',
-     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope, $ionicPopup) {
+    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope', '$ionicPopup', '$ionicHistory',
+     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope, $ionicPopup, $ionicHistory) {
 
          $scope.model = {};
          $scope.model.list = { id: 0 };
@@ -45,18 +45,13 @@ angular.module('app.controllers').controller('ListCtrl',
                     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
                     var tomorrow = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, 0, 0);
                     var dayAfter = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 2, 0, 0, 0);
-                    var weekday = new Array(7);
-                    weekday[0] = "Sunday";
-                    weekday[1] = "Monday";
-                    weekday[2] = "Tuesday";
-                    weekday[3] = "Wednesday";
-                    weekday[4] = "Thursday";
-                    weekday[5] = "Friday";
-                    weekday[6] = "Saturday";
-
-                    var nextDay = weekday[dayAfter.getDay()] + ' ' + $scope.getDateString(dayAfter);
+                   
+                    var nextDay = $scope.getDateString(dayAfter);
                     var after = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 3, 0, 0, 0);
 
+                    var nextWeek = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7, 0, 0, 0);
+                    var twoWeeks = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 14, 0, 0, 0);
+                    var threeWeeks = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 21, 0, 0, 0);
 
                     if (list.listType == 'simple') {
                         $scope.model.timeFrames[0] = { name: 'All Tasks', time: early, tasks: [] };
@@ -66,6 +61,10 @@ angular.module('app.controllers').controller('ListCtrl',
                         $scope.model.timeFrames[2] = { name: nextDay, time: dayAfter, tasks: [] };
                         $scope.model.timeFrames[3] = { name: 'After', time: after, tasks: [] };
                     } else if (list.listType == 'weekly') {
+                        $scope.model.timeFrames[0] = { name: $scope.getWeeklyDateString(today, nextWeek), time: today, tasks: [] };
+                        $scope.model.timeFrames[1] = { name: $scope.getWeeklyDateString(nextWeek, twoWeeks), time: nextWeek, tasks: [] };
+                        $scope.model.timeFrames[2] = { name: $scope.getWeeklyDateString(twoWeeks, threeWeeks), time: twoWeeks, tasks: [] };
+                        $scope.model.timeFrames[3] = { name: $scope.getDateString(threeWeeks) + ' onwards', time: threeWeeks, tasks: [] };
                     }
 
 
@@ -73,8 +72,22 @@ angular.module('app.controllers').controller('ListCtrl',
                 }, function (error) { });
          };
 
+         //getweeklydate
+         $scope.getWeeklyDateString = function (date1, date2) {
+             return $scope.getDateString(date1) + ' - ' + $scope.getDateString(date2);
+         };
+
          //function to return the date + 'th' from a given date to prettify it in view
          $scope.getDateString = function (date) {
+             var weekday = new Array(7);
+             weekday[0] = "Sunday";
+             weekday[1] = "Monday";
+             weekday[2] = "Tuesday";
+             weekday[3] = "Wednesday";
+             weekday[4] = "Thursday";
+             weekday[5] = "Friday";
+             weekday[6] = "Saturday";
+
              var d = date.getDate();
              var dS = d.toString();
              var sS = dS.substring(dS.length - 1, dS.length);
@@ -84,11 +97,12 @@ angular.module('app.controllers').controller('ListCtrl',
              endings[1] = "nd";
              endings[2] = "rd";
              endings[3] = "th";
-             if (arr >= 4) {
-                 return d + endings[3];
+             if (arr >= 4 || arr == 0) {
+                 return weekday[date.getDay()] + ' ' + d + endings[3];
              } else {
-                 return d + endings[arr];
+                 return weekday[date.getDay()] + ' ' + d + endings[arr-1];
              }
+
          }
 
          //load tasks in the list, and assign them to a timespan
@@ -120,11 +134,11 @@ angular.module('app.controllers').controller('ListCtrl',
          //Show sub-menu for deleting list and handling out of date tasks
          $scope.openMenu = function () {
              $scope.prompt = $ionicPopup.show({
-                 template: '<div style="text-align:center;"><button ng-click="viewOutOfDateTodos()">' +
-                     'View missed todo\'s</button><br/><br/><button ng-click="removeList()">Delete List<i class="icon ion-trash-a"></i></button></div>',
+                 template: '<div style="text-align:center;"><button class="button button-full button-positive" ng-disabled="model.list.listType == \'simple\'" ng-click="viewOutOfDateTodos()">' +
+                     'View missed todo\'s</button><br/><button class="button button-full button-assertive" ng-disabled="!model.list.deletable" ng-click="removeList()">Delete List<i class="icon ion-trash-a"></i></button><br/><button class="button button-light" ng-click="closeMenu()">Close</button></div>',
                  scope: $scope,
                  title: 'List Menu'
-             });                         
+             });
          };
 
          $scope.viewOutOfDateTodos = function () {
@@ -133,8 +147,36 @@ angular.module('app.controllers').controller('ListCtrl',
              $state.go('app.outOfDateTasks', { listId: $scope.model.list.id });
          };
 
+         $scope.closeMenu = function () {
+             $scope.prompt.close();
+         };
+
          $scope.removeList = function () {
              $scope.prompt.close();
+
+             var confirmPopup = $ionicPopup.confirm({
+                 title: 'Delete?',
+                 template: 'Are you sure you wish to delete list: {{model.list.listName}}??',
+                 scope: $scope
+             });
+
+             confirmPopup.then(function (res) {
+                 if (res) {
+                     listStorageService.deleteList($scope.model.list.id)
+                        .then(function (deleted) {
+                            if (deleted) {
+                                window.plugins.toast.showShortCenter('List deleted');
+                                $ionicHistory.nextViewOptions({
+                                    disableBack: true
+                                });
+                                $state.go('app.list', { listId: 1 });
+                            }
+                        }, function (error) { });
+                 } else {
+                     console.log('You are not sure');
+                 }
+             });
+
          };
 
 

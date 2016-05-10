@@ -65,6 +65,18 @@
         });
     };
 
+    //delete list
+    service.deleteList = function (id) {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("DELETE FROM list_table WHERE id=? AND deletable=?;", [id, 1], function (res) {
+                resolve(true);
+            }, function (error) {
+                console.log('Delete error: ' + error.message);
+                reject(false);
+            });
+        });
+    };
+
     //function to retrieve all lists
     service.getLists = function () {
         return $q(function (resolve, reject) {
@@ -131,7 +143,7 @@
                 for (var i = 0; i < rows.length; i++) {
                     sanitizedRows[i] = rows.item(i);
                     sanitizedRows[i].subTasks = angular.fromJson(rows.item(i).subTasks);
-                    sanitizedRows[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));                    
+                    sanitizedRows[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
                 }
                 console.log("Tasks in list retrieved");
                 resolve(sanitizedRows);
@@ -159,7 +171,7 @@
                         sanitizedRows[row].subTasks = angular.fromJson(rows.item(i).subTasks);
                         sanitizedRows[row].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
                         row++;
-                    }                    
+                    }
                 }
                 console.log("Tasks in list retrieved");
                 resolve(sanitizedRows);
@@ -176,7 +188,7 @@
                 var rows = res.rows;
                 var sanitizedRow = rows.item(0);
                 sanitizedRow.subTasks = angular.fromJson(rows.item(0).subTasks);
-                sanitizedRow.completionDate = new Date(parseInt(rows.item(0).completionDate, 10));                
+                sanitizedRow.completionDate = new Date(parseInt(rows.item(0).completionDate, 10));
                 console.log("Task retrieved with id " + taskId);
                 resolve(sanitizedRow);
             }, function (error) {
