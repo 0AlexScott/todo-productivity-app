@@ -11,7 +11,7 @@
 }
 
 .plus-button-medium {
-    font-size:40px;
+    font-size:36px;
     color:#FF686B; 
     background-color:#FFFFFF;
 }
@@ -96,4 +96,13 @@ div.spinner {
 .spinner svg {
   width: 56px;
   height: 56px;
+}
+
+.pink-border {
+    border: 1px solid #FF686B;
+    margin: 8px;
+}
+
+.no-border{
+    border-width:0px;
 }
