@@ -59,6 +59,15 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
               }
           }
       })
+      .state('app.outOfDateTasks', {
+          url: '/outOfDate?listId',
+          views: {
+              'menuContent': {
+                  templateUrl: 'templates/outOfDateList.html',
+                  controller: 'OutOfDateListCtrl'
+              }
+          }
+      })
       .state('app.taskCreation', {
           url: '/taskCreation',
           views: {

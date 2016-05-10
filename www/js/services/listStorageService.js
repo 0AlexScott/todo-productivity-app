@@ -141,6 +141,34 @@
         });
     };
 
+    //get all tasks in list
+    service.getOutOfDateTasksInList = function (listId) {
+
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+        var millis = today.getTime();
+
+        return $q(function (resolve, reject) {
+            service.db.executeSql("SELECT * FROM task_table WHERE listId=?;", [listId], function (res) {
+                var rows = res.rows;
+                var sanitizedRows = [];
+                var row = 0;
+                for (var i = 0; i < rows.length; i++) {
+                    if (parseInt(rows.item(i).completionDate, 10) < millis) {
+                        sanitizedRows[row] = rows.item(i);
+                        sanitizedRows[row].subTasks = angular.fromJson(rows.item(i).subTasks);
+                        sanitizedRows[row].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
+                        row++;
+                    }                    
+                }
+                console.log("Tasks in list retrieved");
+                resolve(sanitizedRows);
+            }, function (error) {
+                reject(console.log('SELECT error in getTasksInList'));
+            });
+        });
+    };
+
     //get single task
     service.getTask = function (taskId) {
         return $q(function (resolve, reject) {
@@ -167,8 +195,6 @@
             });
         });
     };
-
-
     return service;
 }
 ]);

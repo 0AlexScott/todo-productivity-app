@@ -1,6 +1,6 @@
 angular.module('app.controllers').controller('ListCtrl',
-    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope', '$ionicPopover',
-     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope, $ionicPopover) {
+    ['$scope', 'listStorageService', '$timeout', '$state', '$stateParams', '$rootScope', '$ionicPopup',
+     function ($scope, listStorageService, $timeout, $state, $stateParams, $rootScope, $ionicPopup) {
 
          $scope.model = {};
          $scope.model.list = { id: 0 };
@@ -117,17 +117,24 @@ angular.module('app.controllers').controller('ListCtrl',
              }
          };
 
-         var template = '<ion-popover-view><ion-header-bar> <h1 class="title">My Popover Title</h1> </ion-header-bar> <ion-content> {{model.list.id}} </ion-content></ion-popover-view>';
-
-         $scope.popover = $ionicPopover.fromTemplate(template, {
-             scope: $scope
-         });
-
-         $scope.openPopover = function ($event) {
-             $scope.popover.show($event);
+         //Show sub-menu for deleting list and handling out of date tasks
+         $scope.openMenu = function () {
+             $scope.prompt = $ionicPopup.show({
+                 template: '<div style="text-align:center;"><button ng-click="viewOutOfDateTodos()">' +
+                     'View missed todo\'s</button><br/><br/><button ng-click="removeList()">Delete List<i class="icon ion-trash-a"></i></button></div>',
+                 scope: $scope,
+                 title: 'List Menu'
+             });                         
          };
-         $scope.closePopover = function () {
-             $scope.popover.hide();
+
+         $scope.viewOutOfDateTodos = function () {
+             $scope.prompt.close();
+
+             $state.go('app.outOfDateTasks', { listId: $scope.model.list.id });
+         };
+
+         $scope.removeList = function () {
+             $scope.prompt.close();
          };
 
 

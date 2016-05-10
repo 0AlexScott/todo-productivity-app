@@ -2,7 +2,8 @@
     <ion-header-bar>
         <div class="home-header-button" ng-show="model.pageLoaded">
             <i class="icon ion-plus-circled plus-button" ui-sref="app.taskCreation({listId: model.list.id})"></i>
-                <i class="icon ion-android-more-vertical plus-button" style="width:15px" ng-click="openPopover($event)"></i>
+            <i class="icon ion-more plus-button" style="width:15px" ng-click="openMenu()"></i>
+                
         </div>
 
     </ion-header-bar>
@@ -14,6 +15,7 @@
                 </div>
             </div>
             <div class="page-content">
+                
                 <div class="todo-list">
                     <div ng-repeat="timeframe in model.timeFrames">
                         <div class="todo-list-item todo-list-divider">
