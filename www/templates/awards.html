@@ -1,8 +1,25 @@
 ﻿<ion-view view-title="Awards">
     <ion-content>
         <div class="page-has-header">
-            <div class="page-content">
-                {{model.hello}}
+            <div class="page-content" style="text-align:center;">
+                <h1><i class="icon ion-ribbon-a" style="font-size:28px; color:#FF686B"></i> Records <i class="icon ion-ribbon-a" style="font-size:28px; color:#FF686B"></i></h1>
+                <div ng-repeat="award in model.records" class="awards-list-item">
+                    
+                    <b>{{award.awardDescription}}</b> 
+                    <br/>
+                    <span style="font-size:26px; color: #FF686B">{{award.count}}</span>
+                    <br/>
+                    Last awarded: {{award.lastAwarded | date:'dd/MM/yyyy'}}
+                </div>
+
+                <h1>Trophies</h1>
+                <div ng-repeat="award in model.trophies" class="awards-list-item">
+                    <b>{{award.awardName}}</b>
+                    <br/>
+                    <span>{{award.awardDescription}}</span>
+                    <br />
+                    <i class="icon ion-trophy" style="font-size:26px"></i> x {{award.count}}
+                </div>
             </div>
         </div>
     </ion-content>
