@@ -20,7 +20,7 @@
       <ion-list>
           <div class="todo-list-item todo-list-divider" style="font-size:24px; padding-top:20px">
               <b>Lists</b>
-              <span class="todo-item-right" style="margin-top:-8px;" ui-sref="app.listCreation">
+              <span menu-close class="todo-item-right" style="margin-top:-8px;" ui-sref="app.listCreation">
                   <i class="icon ion-plus-circled plus-button-medium"></i>
               </span>
           </div>
@@ -36,10 +36,10 @@
           <div class="todo-list-item todo-list-divider" style="font-size:24px;">
               <b>Your productivity</b>
           </div>
-          <ion-item menu-close ui-sref="app.list({listId:1})" class="pink-border">
-              Your awards 
+          <ion-item menu-close ui-sref="app.awards" class="pink-border">
+              Your awards <i class="icon ion-trophy" style="font-size:18px"></i>
           </ion-item>
-          <ion-item menu-close ui-sref="app.list({listId:1})" class="pink-border">
+          <ion-item menu-close ui-sref="app.tracker" class="pink-border">
               Productivity Tracker <img src="img/pp.png" style="width:18px;height:18px;" />
           </ion-item>
       </ion-list>

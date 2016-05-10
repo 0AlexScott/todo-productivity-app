@@ -7,6 +7,7 @@
         if (!service.db) {
             service.db = window.sqlitePlugin.openDatabase({ name: "my.productivityPoints.db" });
             service.db.executeSql('CREATE TABLE IF NOT EXISTS productivity_transactions (id integer primary key, pointsAwarded integer, completionDate integer);');
+            service.db.executeSql('CREATE TABLE IF NOT EXISTS awards_table (id integer primary key, awardDescription text, );');
 
         }
     };
@@ -42,7 +43,9 @@
                 reject(false);
             });
         });
-    };
+    };    
+
+
 
     return service;
 }

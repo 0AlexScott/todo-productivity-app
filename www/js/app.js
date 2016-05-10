@@ -98,6 +98,26 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
             }
         },
         cache: false
+    })
+    .state('app.awards', {
+        url: '/awards',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/awards.html',
+                controller: 'AwardsCtrl'
+            }
+        },
+        cache: false
+    })
+    .state('app.tracker', {
+        url: '/tracker',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/tracker.html',
+                controller: 'TrackerCtrl'
+            }
+        },
+        cache: false
     });
 
     // if none of the above states are matched, use this as the fallback
