@@ -42,13 +42,13 @@
                     var newAwards = [];
 
                     var d = new Date();
-                    var yesterday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1, d.getMinutes(), d.getSeconds(), 0);
+                    var yesterday = new Date(d.getTime() - service.dayInMillis);
 
                     if (service.canBeAwarded(awards[0])) {
                         var toaward = true;
 
-                        var twodaysago = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 2, d.getMinutes(), d.getSeconds(), 0);
-                        var threedaysago = new Date(d.getFullYear(), d.getMonth(), d.getDate() - 3, d.getMinutes(), d.getSeconds(), 0);
+                        var twodaysago = new Date(d.getTime() - 2 * service.dayInMillis);
+                        var threedaysago = new Date(d.getTime() - 3 * service.dayInMillis);
                         var timeFrames = [d, yesterday, twodaysago, threedaysago];
                         for (var i = 0; i < timeFrames.length - 1; i++) {
                             var complete = false;
@@ -71,8 +71,8 @@
                         var totalPPSinceYesterday = 0;
 
                         for (var i = 0; i < transactions.length; i++) {
-                            if (transactions[j].completionDate > yesterday && transactions[j] < d) {
-                                totalPPSinceYesterday += transactions[j].pointsAwarded;
+                            if (transactions[i].completionDate > yesterday && transactions[i].completionDate < d) {
+                                totalPPSinceYesterday += transactions[i].pointsAwarded;
                             }
                         }
 
