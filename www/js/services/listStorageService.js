@@ -33,8 +33,6 @@
                 } else {
                     console.log("FirstTimeOpen = true, lists being initialised");
                     service.createList('Todo: Next few days', 'daily', 0);
-                    service.createList('Todo: Some day', 'simple', 0);
-                    service.createList('Incomplete tasks', 'simple', 0);
                     var d = new Date();
                     var milli = d.getTime();
                     service.createTask(1, 'Make new list', '[{\"name\":\"Create list from side menu\"}, {\"name\":\"Open list and add new task\"}]', milli, 50, 0);

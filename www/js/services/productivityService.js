@@ -21,13 +21,13 @@
     service.populateAwards = function () {
         console.log("FirstTimeOpen = true, awards being initialised");
         service.createAward('Partially Productive', 'Obtained PP THREE days in a row', service.dayInMillis * 3);     //1   DONE
-        service.createAward('Powerfully Productive', 'Obtained PP SEVEN days in a row', service.dayInMillis * 7);    //2
+        service.createAward('Powerfully Productive', 'Obtained PP SEVEN days in a row', service.dayInMillis * 7);    //2   DONE
         service.createAward('Productivity Slugger', 'Obtained PP FOURTEEN days in a row', service.dayInMillis * 14); //3 
         service.createAward('Grafter', 'Worked for 200 PP in ONE day', service.dayInMillis);                         //4   DONE
-        service.createAward('Hard worker', 'Worked for 500 PP in ONE day!', service.dayInMillis);                    //5
-        service.createAward('What a day!', 'Completed 10 tasks in one day', service.dayInMillis);                    //6
-        service.createAward('Completionist', 'Completed 30 tasks in a week', service.dayInMillis * 7);               //7
-        service.createAward('Smashing records', 'Earned more PP than week before', service.dayInMillis * 7);         //8
+        service.createAward('Hard worker', 'Worked for 500 PP in ONE day!', service.dayInMillis);                    //5   DONE
+        service.createAward('What a day!', 'Completed 10 tasks in one day', service.dayInMillis);                    //6   DONE
+        service.createAward('Completionist', 'Completed 30 tasks in a week', service.dayInMillis * 7);               //7   DONE
+        service.createAward('Smashing records', 'Earned more PP than week before', service.dayInMillis * 7);         //8   DONE
         service.createAward('Record', 'Most tasks completed in 24 hours', 0);                                       //9  DONE
         service.createAward('Record', 'Most tasks completed in one week', 0);                                       //10  DONE
         service.createAward('Record', 'PP gained in 24 hours', 0);                                                  //11  DONE
@@ -44,6 +44,7 @@
                     var d = new Date();
                     var yesterday = new Date(d.getTime() - service.dayInMillis);
                     var lastWeek = new Date(d.getTime() - 7 * service.dayInMillis);
+                    var twoWeeksAgo = new Date(d.getTime() - 14 * service.dayInMillis);
 
                     if (service.canBeAwarded(awards[0])) {
                         var toaward = true;
@@ -68,6 +69,54 @@
                         }
                     }
 
+                    if (service.canBeAwarded(awards[1])) {
+                        var toaward = true;
+                        var timeFrames = [];
+
+                        for (var x = 0; x < 8; x++) {
+                            timeFrames[x] = new Date(d.getTime() - x * service.dayInMillis);
+                        }
+                        for (var i = 0; i < timeFrames.length - 1; i++) {
+                            var complete = false;
+                            for (var j = 0; j < transactions.length; j++) {
+                                if (transactions[j].completionDate > timeFrames[i] && transactions[j] < timeFrames[i + 1]) {
+                                    complete = true;
+                                }
+                            }
+                            if (complete == false) {
+                                toaward = false;
+                            }
+                        }
+                        if (toaward) {
+                            service.updateAward(awards[1].id, awards[1].count + 1, d.getTime());
+                            newAwards.push(awards[1]);
+                        }
+                    }
+
+                    if (service.canBeAwarded(awards[2])) {
+                        var toaward = true;
+                        var timeFrames = [];
+
+                        for (var x = 0; x < 15; x++) {
+                            timeFrames[x] = new Date(d.getTime() - x * service.dayInMillis);
+                        }
+                        for (var i = 0; i < timeFrames.length - 1; i++) {
+                            var complete = false;
+                            for (var j = 0; j < transactions.length; j++) {
+                                if (transactions[j].completionDate > timeFrames[i] && transactions[j] < timeFrames[i + 1]) {
+                                    complete = true;
+                                }
+                            }
+                            if (complete == false) {
+                                toaward = false;
+                            }
+                        }
+                        if (toaward) {
+                            service.updateAward(awards[2].id, awards[2].count + 1, d.getTime());
+                            newAwards.push(awards[2]);
+                        }
+                    }
+
                     if (service.canBeAwarded(awards[3])) {
                         var totalPPSinceYesterday = 0;
 
@@ -80,6 +129,70 @@
                         if (totalPPSinceYesterday >= 200) {
                             service.updateAward(awards[3].id, awards[3].count + 1, d.getTime());
                             newAwards.push(awards[3]);
+                        }
+                    }
+
+                    if (service.canBeAwarded(awards[4])) {
+                        var totalPPSinceYesterday = 0;
+
+                        for (var i = 0; i < transactions.length; i++) {
+                            if (transactions[i].completionDate > yesterday && transactions[i].completionDate < d) {
+                                totalPPSinceYesterday += transactions[i].pointsAwarded;
+                            }
+                        }
+
+                        if (totalPPSinceYesterday >= 500) {
+                            service.updateAward(awards[4].id, awards[4].count + 1, d.getTime());
+                            newAwards.push(awards[4]);
+                        }
+                    }
+
+                    if (service.canBeAwarded(awards[5])) {
+                        var tasksCompleteSinceYday = 0;
+
+                        for (var i = 0; i < transactions.length; i++) {
+                            if (transactions[i].completionDate > yesterday && transactions[i].completionDate < d) {
+                                tasksCompleteSinceYday += 1;
+                            }
+                        }
+
+                        if (tasksCompleteSinceYday >= 10) {
+                            service.updateAward(awards[5].id, awards[5].count + 1, d.getTime());
+                            newAwards.push(awards[5]);
+                        }
+                    }
+
+                    if (service.canBeAwarded(awards[6])) {
+                        var tasksCompleteSinceLastWeek = 0;
+
+                        for (var i = 0; i < transactions.length; i++) {
+                            if (transactions[i].completionDate > lastWeek && transactions[i].completionDate < d) {
+                                tasksCompleteSinceLastWeek += 1;
+                            }
+                        }
+
+                        if (tasksCompleteSinceLastWeek >= 30) {
+                            service.updateAward(awards[6].id, awards[6].count + 1, d.getTime());
+                            newAwards.push(awards[6]);
+                        }
+                    }
+
+                    if (service.canBeAwarded(awards[7])) {
+                        var ppEarnedThisWeek = 0;
+                        var ppEarnedLastWeek = 0;
+
+                        for (var i = 0; i < transactions.length; i++) {
+                            if (transactions[i].completionDate > lastWeek && transactions[i].completionDate < d) {
+                                ppEarnedThisWeek += transactions[i].pointsAwarded;
+                            }
+                            if (transactions[i].completionDate > twoWeeksAgo && transactions[i].completionDate < lastWeek) {
+                                ppEarnedLastWeek += transactions[i].pointsAwarded;
+                            }
+                        }
+
+                        if (ppEarnedThisWeek > ppEarnedLastWeek) {
+                            service.updateAward(awards[7].id, awards[7].count + 1, d.getTime());
+                            newAwards.push(awards[7]);
                         }
                     }
 
