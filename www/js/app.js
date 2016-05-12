@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.bootstrap', 'ui.bootstrap.datetimepicker'])
+angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.bootstrap', 'ui.bootstrap.datetimepicker', 'chart.js'])
 
 .run(['$ionicPlatform', 'listStorageService', '$rootScope', 'productivityService', function ($ionicPlatform, listStorageService, $rootScope, productivityService) {
     $ionicPlatform.ready(function () {
@@ -129,5 +129,5 @@ angular.module('starter', ['ionic', 'app.controllers', 'app.services', 'ui.boots
 });
 
 
-angular.module('app.controllers', ['ui.bootstrap']);
+angular.module('app.controllers', ['ui.bootstrap', 'chart.js']);
 angular.module('app.services', []);

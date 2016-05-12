@@ -85,7 +85,7 @@
                         .then(function (res) {
                             listStorageService.deleteTask($scope.model.task.id).then(function (success) {
                                 if (success) {
-                                    window.plugins.toast.showLongCenter('You have been awarded ' + $scope.model.task.productivityPoints + ' productivity points!!\n\nWell done!!');
+                                    window.plugins.toast.showLongTop('You have been awarded ' + $scope.model.task.productivityPoints + ' productivity points!!\n\nWell done!!');
                                     console.log("Task deleted successfully");
                                     $state.go($rootScope.previousState, $rootScope.previousStateParams);
                                 }

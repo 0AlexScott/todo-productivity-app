@@ -22,7 +22,7 @@
         console.log("FirstTimeOpen = true, awards being initialised");
         service.createAward('Partially Productive', 'Obtained PP THREE days in a row', service.dayInMillis * 3);     //1   DONE
         service.createAward('Powerfully Productive', 'Obtained PP SEVEN days in a row', service.dayInMillis * 7);    //2   DONE
-        service.createAward('Productivity Slugger', 'Obtained PP FOURTEEN days in a row', service.dayInMillis * 14); //3 
+        service.createAward('Productivity Slugger', 'Obtained PP FOURTEEN days in a row', service.dayInMillis * 14); //3   DONE
         service.createAward('Grafter', 'Worked for 200 PP in ONE day', service.dayInMillis);                         //4   DONE
         service.createAward('Hard worker', 'Worked for 500 PP in ONE day!', service.dayInMillis);                    //5   DONE
         service.createAward('What a day!', 'Completed 10 tasks in one day', service.dayInMillis);                    //6   DONE
@@ -34,11 +34,14 @@
         service.createAward('Record', 'PP gained in one week', 0);                                                   //12  DONE
     };
 
-    //check for completed Awards
+    //check for completed Awards - hard coded for each potential award
     service.checkForAwardCompletion = function () {
         return $q(function (resolve, reject) {
             service.getAllAwards().then(function (awards) {
                 service.getAllTransactions().then(function (transactions) {
+                    //a more clean way to do this would be to initially separate transactions into a multidimensional array of 'weeks' by 'days'
+                    //then the array could be queried much easier for each award, and more could be added
+
                     var newAwards = [];
 
                     var d = new Date();
@@ -55,7 +58,7 @@
                         for (var i = 0; i < timeFrames.length - 1; i++) {
                             var complete = false;
                             for (var j = 0; j < transactions.length; j++) {
-                                if (transactions[j].completionDate > timeFrames[i] && transactions[j] < timeFrames[i + 1]) {
+                                if (transactions[j].completionDate > timeFrames[i + 1] && transactions[j].completionDate < timeFrames[i]) {
                                     complete = true;
                                 }
                             }
@@ -79,7 +82,7 @@
                         for (var i = 0; i < timeFrames.length - 1; i++) {
                             var complete = false;
                             for (var j = 0; j < transactions.length; j++) {
-                                if (transactions[j].completionDate > timeFrames[i] && transactions[j] < timeFrames[i + 1]) {
+                                if (transactions[j].completionDate > timeFrames[i + 1] && transactions[j].completionDate < timeFrames[i]) {
                                     complete = true;
                                 }
                             }
@@ -103,7 +106,7 @@
                         for (var i = 0; i < timeFrames.length - 1; i++) {
                             var complete = false;
                             for (var j = 0; j < transactions.length; j++) {
-                                if (transactions[j].completionDate > timeFrames[i] && transactions[j] < timeFrames[i + 1]) {
+                                if (transactions[j].completionDate > timeFrames[i + 1] && transactions[j].completionDate < timeFrames[i]) {
                                     complete = true;
                                 }
                             }
@@ -281,6 +284,7 @@
         })
     };
 
+    //check if the award can be given out based on its previous award date and time delay
     service.canBeAwarded = function (award) {
         var d = new Date();
         var nextAwardDate = new Date(award.lastAwarded.getTime() + award.timeDelay);
@@ -385,6 +389,45 @@
                 }
                 console.log("Retrieved total points: " + totalPoints);
                 resolve(totalPoints);
+            }, function (error) {
+                console.log('INSERT error: ' + error.message);
+                reject(false);
+            });
+        });
+    };
+
+
+    //populate tracker
+    service.getPointsOverXWeeks = function (numOfWeeks) {
+        return $q(function (resolve, reject) {
+            service.db.executeSql("SELECT * FROM productivity_transactions;", [], function (res) {
+                var rows = res.rows;
+                var transactions = [];
+                for (var i = 0; i < rows.length; i++) {
+                    transactions[i] = rows.item(i);
+                    transactions[i].completionDate = new Date(parseInt(rows.item(i).completionDate, 10));
+                }
+
+                var d = new Date();
+                var timeFrames = [];
+                var pointsByWeek = [numOfWeeks];
+                for (var z = 0; z < numOfWeeks; z++) {
+                    pointsByWeek[z] = 0;
+                }
+
+                for (var x = 0; x < numOfWeeks + 1; x++) {
+                    timeFrames[x] = new Date(d.getTime() - (7 * x * service.dayInMillis));
+                }
+
+                for (var i = 0; i < timeFrames.length - 1; i++) {
+                    for (var j = 0; j < transactions.length; j++) {
+                        if (transactions[j].completionDate > timeFrames[i + 1] && transactions[j].completionDate < timeFrames[i]) {
+                            pointsByWeek[i] += transactions[j].pointsAwarded;
+                        }
+                    }
+                }
+
+                resolve(pointsByWeek);
             }, function (error) {
                 console.log('INSERT error: ' + error.message);
                 reject(false);

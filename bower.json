@@ -5,6 +5,7 @@
     "ionic": "driftyco/ionic-bower#1.2.4"
   },
   "dependencies": {
-    "angular-bootstrap-datetimepicker": "^1.0.1"
+    "angular-bootstrap-datetimepicker": "^1.0.1",
+    "angular-chart.js": "^0.10.2"
   }
 }
