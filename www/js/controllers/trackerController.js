@@ -24,7 +24,7 @@
          $scope.createMessage = function () {
              if ($scope.data[0][0] > $scope.data[0][5]) {
                  var x = $scope.data[0][0] - $scope.data[0][5];
-                 $scope.message = "Congratulations!<br/>Your productivity has boosted by " + x + "<img src=\"img/pp.png\" style=\"width:16px;height:16px;\" /> since 5 weeks ago!";
+                 $scope.message = "Congratulations!<br/>Your productivity has boosted by " + x + " PP since 5 weeks ago!";
              } else {
                  $scope.message = "Well done, keep up the good work!";
              }
