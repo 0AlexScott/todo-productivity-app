@@ -2,9 +2,16 @@
     <ion-content>
         <div class="page-has-header">
             <div class="page-content">
-
-                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels">
-                </canvas>
+                <div style="text-align:center;margin-top:50px;font-size:18px">
+                    <img src="img/pp.png" style="width:22px;height:22px;" /> per week
+                </div>
+                <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels"></canvas>
+                <div style="text-align:center;font-size:16px;">
+                    Weeks ago ->
+                </div>
+                <div style="text-align:center;font-size:32px; margin-top:75px;">
+                    {{message}}
+                </div>
             </div>
         </div>
     </ion-content>
