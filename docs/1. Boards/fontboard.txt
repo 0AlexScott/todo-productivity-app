@@ -1,0 +1,8 @@
+Headers - 18px
+Input Fields - 11px
+Button text - 11px
+List item title - 11px
+List item sub - 11px
+Regular text - 9.5 - 11px
+
+Displayed on the three footboards are examples of sets of fonts that could be used in the application. Each board expresses different styles, ranging from standard, nicely readable and uniform Helvetica based fonts over to slightly more alternative, fun options with Chalkboard and Geneva to experiment with different personalities for the app. Fonts used in an application dictate a lot of its appearance, especially in one like the Productivity Helper which is a text based application.
